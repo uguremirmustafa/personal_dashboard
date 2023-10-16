@@ -3,8 +3,8 @@ import Input from '@/components/atoms/Input';
 import SaveButton from '@/components/atoms/SaveButton';
 import AuthLayout from '@/components/layout/AuthLayout';
 import { useAuth } from '@/context/AuthContext';
-import { LoginFormValues } from '@/types';
-import { loginFormSchema } from '@/utils/schemas/schemas';
+import { User } from '@/utils/schema-types';
+import { User as UserSchema } from '@/utils/schemas/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactElement } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -15,14 +15,14 @@ function Page(): JSX.Element {
     control,
     formState: { errors, isValid },
     setError,
-  } = useForm<LoginFormValues>({
+  } = useForm<User>({
     defaultValues: { email: 'uguremirmustafa@gmail.com', password: 'ugur1234' },
-    resolver: zodResolver(loginFormSchema),
+    resolver: zodResolver(UserSchema),
   });
 
   const auth = useAuth();
 
-  function loginUser(data: LoginFormValues) {
+  function loginUser(data: User) {
     auth.login(data, () =>
       setError('email', {
         type: 'manual',

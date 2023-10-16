@@ -29,3 +29,42 @@
     @apply bg-red-600 hover:bg-red-700;
   }
 }
+.rs__control {
+  @apply !bg-base-100 !border-primary !border-2 !rounded-[8px] h-12 !overflow-hidden;
+  color: white !important;
+}
+.rs__control--is-focused {
+  box-shadow: none !important;
+  @apply !border-2;
+}
+.rs__value-container {
+  @apply !text-neutral-content;
+}
+
+.rs__indicators {
+  @apply bg-base-100;
+}
+.rs__indicator-separator {
+  @apply hidden;
+}
+.rs__single-value {
+  @apply !text-neutral-content;
+}
+.rs__input-container {
+  @apply !text-neutral-content;
+}
+.rs__menu {
+  @apply !bg-base-100;
+}
+.rs__option {
+  @apply !bg-base-200 !text-neutral-content;
+}
+.rs__option--is-focused {
+  @apply !bg-neutral-700/50 !text-white;
+}
+.rs__multi-value {
+  @apply !bg-neutral-700/50 !rounded;
+}
+.rs__multi-value__label {
+  @apply !text-primary-content;
+}

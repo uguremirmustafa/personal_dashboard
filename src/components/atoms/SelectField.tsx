@@ -4,16 +4,12 @@ import { forwardRef } from 'react';
 
 interface SelectFieldProps extends RsProps {
   label?: string;
-}
-
-export interface SelectOption<T = unknown> {
-  label: string;
-  value: T;
+  error: any;
 }
 
 // eslint-disable-next-line react/display-name
 const SelectField = forwardRef<any, SelectFieldProps>((props, ref) => {
-  const { label, name, className, ...nativeProps } = props;
+  const { label, name, className, error, ...nativeProps } = props;
   return (
     <FormControl className={className}>
       {label ? (
@@ -30,8 +26,14 @@ const SelectField = forwardRef<any, SelectFieldProps>((props, ref) => {
         classNamePrefix="rs"
         isClearable
       />
+      {error ? <span>{error.message}</span> : ''}
     </FormControl>
   );
 });
 
 export default SelectField;
+
+export interface SelectOption<T = unknown> {
+  label: string;
+  value: T;
+}

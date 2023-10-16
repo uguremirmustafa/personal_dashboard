@@ -1,5 +1,5 @@
 import { LinkCategory } from '@/types';
-import axios from 'axios';
+import axiosObj from '@/utils/api/axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -8,7 +8,7 @@ function useLinks() {
   const router = useRouter();
   const categoryId = router.query['category'];
   async function getData() {
-    const res = await axios(`/api/links?categoryId=${categoryId}`);
+    const res = await axiosObj(`/link/${categoryId}`);
     if (res.status === 200) {
       setLinks(res.data);
     } else {

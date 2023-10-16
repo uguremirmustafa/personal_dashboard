@@ -73,10 +73,11 @@ const AuthProvider = ({ children }: Props) => {
         console.log('user not found');
       }
     };
-
-    initAuth();
+    if (router.isReady) {
+      initAuth();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router.isReady]);
 
   const handleLogin = async (params: LoginFormValues, errorCallback?: ErrCallbackType) => {
     const res = await axiosObj.post('/auth/login', params);

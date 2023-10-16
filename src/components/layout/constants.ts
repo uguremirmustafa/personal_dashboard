@@ -9,8 +9,4 @@ export const NAVBAR_ITEMS: NavbarItem[] = [
     name: 'links',
     path: '/links',
   },
-  {
-    name: 'login',
-    path: '/auth/login',
-  },
 ];
