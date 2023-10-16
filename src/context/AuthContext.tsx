@@ -1,7 +1,8 @@
 import { authConfig } from '@/config/authConfig';
-import { AuthValuesType, ErrCallbackType, LoginFormValues, UserInfo } from '@/types';
+import { AuthValuesType, ErrCallbackType, UserInfo } from '@/types';
 import axiosObj from '@/utils/api/axios';
 import { getCookie, removeCookie, setCookie } from '@/utils/helpers/cookie';
+import { Credentials } from '@/utils/schema-types';
 import { useRouter } from 'next/router';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
@@ -79,20 +80,23 @@ const AuthProvider = ({ children }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
-  const handleLogin = async (params: LoginFormValues, errorCallback?: ErrCallbackType) => {
-    const res = await axiosObj.post('/auth/login', params);
-    if (res?.data) {
-      //   params.rememberMe
-      //     ? window.localStorage.setItem(authConfig.storageUserEmailKeyName, params.LoginEmail)
-      //     : null;
-      storeUser(res?.data);
+  const handleLogin = async (params: Credentials, errorCallback?: ErrCallbackType) => {
+    try {
+      const res = await axiosObj.post('/auth/login', params);
+      if (res?.data) {
+        storeUser(res?.data);
 
-      const returnUrl = router.query.returnUrl;
-      const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/';
+        const returnUrl = router.query.returnUrl;
+        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/';
 
-      router.replace(redirectURL as string);
-    } else {
-      if (errorCallback) errorCallback({ message: 'Username or password is not correct' });
+        router.replace(redirectURL as string);
+      } else {
+        if (errorCallback) errorCallback({ message: 'Username or password is not correct' });
+      }
+    } catch (error) {
+      if (errorCallback) {
+        errorCallback({ message: 'sth went wrong' });
+      }
     }
   };
 
