@@ -1,8 +1,6 @@
 import * as z from 'zod';
 import {
   BaseIngredient,
-  FoodCategory,
-  FoodCategoryWithId,
   ID,
   CategoryId,
   Ingredient,
@@ -23,6 +21,8 @@ import {
   LinkWithId,
   LinkItemWithCategoryIdList,
   Credentials,
+  Category,
+  CategoryWithId,
 } from './schemas/schemas';
 
 // id
@@ -42,9 +42,8 @@ export type UserWithId = z.infer<typeof UserWithId>;
 export type Credentials = z.infer<typeof Credentials>;
 
 // food_category
-export type FoodCategoryParams = z.infer<typeof ID>;
-export type FoodCategory = z.infer<typeof FoodCategory>;
-export type FoodCategoryWithId = z.infer<typeof FoodCategoryWithId>;
+export type Category = z.infer<typeof Category>;
+export type CategoryWithId = z.infer<typeof CategoryWithId>;
 
 // ingredient
 export type IngredientParams = z.infer<typeof ID>;

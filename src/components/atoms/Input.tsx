@@ -33,9 +33,9 @@ const Input = forwardRef<HTMLInputElement, IProps>((props, ref) => {
         value={value}
         ref={ref}
         id={name}
-        className="input input-bordered input-primary border-2 w-full"
+        className="input input-bordered input-primary border w-full"
       />
-      {error ? <span>{error.message}</span> : ''}
+      {error ? <span className="mt-2 text-xs text-error">{error.message}</span> : ''}
     </FormControl>
   );
 });

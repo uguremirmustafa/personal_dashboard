@@ -1,10 +1,11 @@
 import { LinkCategory } from '@/types';
 import axiosObj from '@/utils/api/axios';
+import { LinkItem, LinkItemWithCategoryIdList } from '@/utils/schema-types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 function useLinks() {
-  const [links, setLinks] = useState<LinkCategory[]>([]);
+  const [links, setLinks] = useState<LinkItemWithCategoryIdList[]>([]);
   const router = useRouter();
   const categoryId = router.query['category'];
   async function getData() {
@@ -23,7 +24,7 @@ function useLinks() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
-  return { links };
+  return { links, getData };
 }
 
 export default useLinks;

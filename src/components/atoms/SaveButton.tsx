@@ -11,7 +11,7 @@ function SaveButton(props: IProps) {
     <button
       {...nativeProps}
       disabled={loading || nativeProps.disabled}
-      className={`btn btn-primary mt-2 ${nativeProps.className}`}
+      className={`btn btn-primary mt-2 no-animation ${nativeProps.className}`}
       type={type}
     >
       <span className="mr-2">{children}</span>

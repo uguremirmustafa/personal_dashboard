@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { FaTimes } from 'react-icons/fa';
+import Button, { ButtonProps } from '@mui/material/Button';
 
-interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IProps extends ButtonProps {
   children?: ReactNode;
   outline?: boolean;
 }

@@ -1,6 +1,6 @@
 import Select, { Props as RsProps } from 'react-select';
-import FormControl from './FormControl';
 import { forwardRef } from 'react';
+import FormControl from './FormControl';
 
 interface SelectFieldProps extends RsProps {
   label?: string;
@@ -19,14 +19,14 @@ const SelectField = forwardRef<any, SelectFieldProps>((props, ref) => {
       ) : null}
       <Select
         {...nativeProps}
-        menuPortalTarget={document.body}
-        styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+        menuPortalTarget={nativeProps.menuPortalTarget ?? document.body}
+        styles={{ menuPortal: (base) => ({ ...base, zIndex: 1000000 }) }}
         ref={ref}
         name={name}
         classNamePrefix="rs"
         isClearable
       />
-      {error ? <span>{error.message}</span> : ''}
+      {error ? <span className="mt-2 text-xs text-error">{error.message}</span> : ''}
     </FormControl>
   );
 });

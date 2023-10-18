@@ -1,81 +1,127 @@
-import Form from '@/components/atoms/Form';
-import Input from '@/components/atoms/Input';
-import SaveButton from '@/components/atoms/SaveButton';
-import SelectField from '@/components/atoms/SelectField';
+import LinkForm from '@/components/forms/LinkForm';
+import LinkCategories from '@/components/layout/LinkCategories';
 import LinksLayout from '@/components/layout/LinksLayout';
 import MainLayout from '@/components/layout/MainLayout';
+import LinkCard from '@/components/link-card/LinkCard';
+import ConfirmationModal from '@/components/modal/modal-contents/ConfirmationModal';
+import { useModal } from '@/context/ModalContext';
+import { useRightClick } from '@/context/RightClickContext';
 import useLinkCategories from '@/hooks/useLinkCategories';
 import useLinks from '@/hooks/useLinks';
 import axiosObj from '@/utils/api/axios';
-import { LinkItemWithCategoryIdList } from '@/utils/schema-types';
-import { LinkItemWithCategoryIdList as schema } from '@/utils/schemas/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { LinkItemWithCategoryIdList, LinkItemWithId } from '@/utils/schema-types';
 import { ReactElement } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { FaPlus } from 'react-icons/fa';
+import { GrEdit } from 'react-icons/gr';
+import { HiOutlineTrash } from 'react-icons/hi2';
 
 function Page(): JSX.Element {
-  const { links } = useLinks();
-  const { categories } = useLinkCategories();
+  const { links, getData } = useLinks();
+  const { getCategories, categories } = useLinkCategories();
+  const { setModal, closeModal } = useModal();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<LinkItemWithCategoryIdList>({
-    defaultValues: { name: '', path: '', categoryIds: [] },
-    resolver: zodResolver(schema),
-    mode: 'all',
-  });
+  function onSuccess() {
+    closeModal();
+    getData();
+    getCategories();
+  }
 
-  async function saveLink(data: LinkItemWithCategoryIdList) {
+  function openLinkForm(item: LinkItemWithCategoryIdList, id?: LinkItemWithId['id']) {
+    setModal({
+      title: 'New Link',
+      content: <LinkForm onSuccess={onSuccess} initialValues={item} id={id} />,
+      id: 'link_form',
+    });
+  }
+
+  async function deleteLink(id: LinkItemWithId['id']) {
     try {
-      const res = await axiosObj.post('/link', data);
-      console.log(res);
+      const res = await axiosObj.delete(`/link/${id}`);
+      if (res) {
+        onSuccess();
+      } else {
+        console.log('sth went wrong');
+      }
     } catch (error) {
       console.log(error);
     }
   }
-  const options = categories.map((x) => ({ value: x.id, label: x.name }));
+
+  function openDeleteConfirm(item: LinkItemWithCategoryIdList, id: LinkItemWithId['id']) {
+    setModal({
+      title: 'Delete Link',
+      id: 'link_form',
+      content: (
+        <ConfirmationModal
+          question={`Are you sure you want to delete this item: ${item.name}?`}
+          onOk={() => deleteLink(id)}
+        />
+      ),
+    });
+  }
+
+  const { setCtxMenu } = useRightClick();
+
+  function handleRightClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    return (node: LinkItemWithCategoryIdList) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const { pageX, pageY } = e;
+      setCtxMenu({
+        x: pageX,
+        y: pageY,
+        isOpen: true,
+        children: (
+          <>
+            <li>
+              <a onClick={() => openLinkForm(node, node.id)}>
+                <GrEdit />
+                Edit
+              </a>
+            </li>
+            <li>
+              <a onClick={() => openDeleteConfirm(node, node.id)}>
+                <HiOutlineTrash />
+                Delete
+              </a>
+            </li>
+          </>
+        ),
+      });
+    };
+  }
 
   return (
-    <div>
-      <Form onSubmit={handleSubmit(saveLink)}>
-        <Controller
-          name="name"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <Input {...field} label="Name" error={error} />
-          )}
-        />
-        <Controller
-          name="path"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <Input {...field} label="URL" type="url" error={error} />
-          )}
-        />
-        <Controller
-          name="categoryIds"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <SelectField {...field} isMulti label="Categories" options={options} error={error} />
-          )}
-        />
-        <SaveButton className="mt-4" loading={false} disabled={!isValid} />
-      </Form>
-      {links.map((link) => {
-        return <div key={link.id}>{link.name}</div>;
-      })}
+    <div className="grid grid-cols-12 gap-4">
+      <LinkCategories categories={categories} />
+      <div className="col-span-10">
+        <div className="flex items-end  gap-4 mb-3">
+          <h2 className="text-2xl font-bold">Links</h2>
+          <div className="tooltip" data-tip="New Link">
+            <button
+              className="btn btn-sm btn-circle btn-primary no-animation shadow-lg"
+              onClick={() => openLinkForm(initialValues)}
+            >
+              <FaPlus />
+            </button>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+          {links.map((link) => {
+            return <LinkCard key={link.path} item={link} handleRightClick={handleRightClick} />;
+          })}
+        </div>
+      </div>
     </div>
   );
 }
 
-Page.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <MainLayout>
-      <LinksLayout>{page}</LinksLayout>
-    </MainLayout>
-  );
-};
-
 export default Page;
+
+const initialValues: LinkItemWithCategoryIdList = {
+  name: '',
+  path: '',
+  icon: '',
+  categoryIds: [],
+  id: 0,
+};

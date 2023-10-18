@@ -2,8 +2,10 @@ import axios from 'axios';
 import { removeCookie } from '../helpers/cookie';
 import { authConfig } from '@/config/authConfig';
 
+export const baseURL = process.env.NEXT_PUBLIC_SERVER_BASE;
+
 const axiosObj = axios.create({
-  baseURL: 'http://localhost:4004/api',
+  baseURL: `${baseURL}api`,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });

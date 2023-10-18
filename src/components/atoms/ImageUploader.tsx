@@ -1,7 +1,8 @@
 import { forwardRef, useState } from 'react';
 import { FieldError } from 'react-hook-form';
 import FormControl from './FormControl';
-import { uploadImage } from 'lib/api/image.api';
+import { uploadImage } from '@/utils/api/image.api';
+import Input from './Input';
 
 interface IProps extends React.HTMLProps<HTMLInputElement> {
   error?: FieldError;
@@ -10,7 +11,7 @@ interface IProps extends React.HTMLProps<HTMLInputElement> {
   imageUrl: string;
   imageClass?: string;
 }
-
+// eslint-disable-next-line react/display-name
 const ImageUploader = forwardRef<HTMLInputElement, IProps>((props, ref) => {
   const {
     error,
@@ -50,7 +51,7 @@ const ImageUploader = forwardRef<HTMLInputElement, IProps>((props, ref) => {
       formData.append('image', imageFile);
       const res = await uploadImage(formData);
       if (res) {
-        const url = import.meta.env.VITE_SERVER_BASE + res;
+        const url = process.env.NEXT_PUBLIC_SERVER_BASE + res;
         setImageUrl(url);
       } else {
         console.log('upload failed');
@@ -81,8 +82,10 @@ const ImageUploader = forwardRef<HTMLInputElement, IProps>((props, ref) => {
         id={name}
         className="file-input file-input-bordered file-input-primary border-2 w-full"
       />
+
       {error ? <span>{error.message}</span> : ''}
       {imageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={imageUrl}
           alt="Preview"

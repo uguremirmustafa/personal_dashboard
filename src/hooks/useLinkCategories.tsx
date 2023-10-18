@@ -1,10 +1,9 @@
-import { LinkCategory } from '@/types';
 import axiosObj from '@/utils/api/axios';
-import axios from 'axios';
+import { CategoryWithId } from '@/utils/schema-types';
 import { useEffect, useState } from 'react';
 
 function useLinkCategories() {
-  const [categories, setCategories] = useState<LinkCategory[]>([]);
+  const [categories, setCategories] = useState<CategoryWithId[]>([]);
 
   async function getCategories() {
     const res = await axiosObj('/link-categories');
@@ -19,7 +18,7 @@ function useLinkCategories() {
     getCategories();
   }, []);
 
-  return { categories };
+  return { categories, getCategories };
 }
 
 export default useLinkCategories;

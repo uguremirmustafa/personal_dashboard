@@ -46,7 +46,9 @@ function Page(): JSX.Element {
             <Input {...field} label="Password" type="password" error={errors?.email} />
           )}
         />
-        <SaveButton className="mt-4" loading={false} disabled={!isValid} />
+        <SaveButton className="mt-4" loading={false} disabled={!isValid}>
+          Login
+        </SaveButton>
       </Form>
     </div>
   );

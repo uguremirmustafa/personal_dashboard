@@ -25,12 +25,11 @@ export const User = Credentials.merge(
 );
 
 export const UserWithId = User.merge(ID);
-export const FoodCategory = z.object({
+export const Category = z.object({
   name: z.string(),
-  image: z.string().nullish(),
-  description: z.string().nullish(),
+  _count: z.object({ links: z.number() }),
 });
-export const FoodCategoryWithId = FoodCategory.merge(ID);
+export const CategoryWithId = Category.merge(ID);
 
 export const Ingredient = z.object({
   name: z.string(),
@@ -40,18 +39,22 @@ export const Ingredient = z.object({
 });
 
 export const LinkItem = z.object({
-  name: z.string(),
-  path: z.string().url(),
+  name: z.string().min(3, 'Come on dude, at least 3 chars 😒'),
+  path: z.string().url('I think this is not a proper URL 👨‍💻'),
+  icon: z.string().default(''),
 });
+
 const CategoryIdList = z.object({
-  categoryIds: z.array(
-    z.object({
-      value: z.number(),
-      label: z.string(),
-    })
-  ),
+  categoryIds: z
+    .array(
+      z.object({
+        value: z.number(),
+        label: z.string(),
+      })
+    )
+    .min(1, 'I need at least one category dude!'),
 });
-export const LinkItemWithCategoryIdList = LinkItem.merge(CategoryIdList);
+export const LinkItemWithCategoryIdList = LinkItem.merge(CategoryIdList).merge(ID);
 
 export const IngredientWithId = Ingredient.merge(ID);
 export const LinkWithId = LinkItem.merge(ID);

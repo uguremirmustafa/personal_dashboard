@@ -4,7 +4,11 @@ import MainLayout from '@/components/layout/MainLayout';
 import LinksLayout from '@/components/layout/LinksLayout';
 
 const Page: NextPageWithLayout = () => {
-  return <div>Links...</div>;
+  return (
+    <div>
+      <p>Select a category and see some links...</p>
+    </div>
+  );
 };
 
 Page.getLayout = function getLayout(page: ReactElement) {

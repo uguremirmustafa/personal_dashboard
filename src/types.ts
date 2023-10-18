@@ -1,13 +1,10 @@
+import { IconType } from 'react-icons';
 import { User } from './utils/schema-types';
-
-export interface LinkCategory {
-  id: number;
-  name: string;
-}
 
 export interface NavbarItem {
   name: string;
   path: string;
+  icon: IconType;
 }
 export interface UserInfo {
   email: string;
@@ -22,3 +19,7 @@ export type AuthValuesType = {
   setUser: (value: UserInfo | null) => void;
   login: (params: User, errorCallback?: ErrCallbackType) => void;
 };
+
+export const MODAL_IDS = ['link_form'] as const;
+
+export type ModalId = (typeof MODAL_IDS)[number];
