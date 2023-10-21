@@ -8,10 +8,9 @@ interface IProps {
 
 function LinksLayout(props: IProps) {
   const { children } = props;
-  const { categories } = useLinkCategories();
   return (
     <div className="grid grid-cols-12 gap-4">
-      <LinkCategories categories={categories} />
+      <LinkCategories />
       <div className="col-span-10">{children}</div>
     </div>
   );

@@ -1,24 +1,16 @@
 import axiosObj from '@/utils/api/axios';
 import { CategoryWithId } from '@/utils/schema-types';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+
+async function getCategories() {
+  const res = await axiosObj('/link-categories');
+  return res.data;
+}
 
 function useLinkCategories() {
-  const [categories, setCategories] = useState<CategoryWithId[]>([]);
+  const result = useQuery<CategoryWithId[]>('link_categories', getCategories);
 
-  async function getCategories() {
-    const res = await axiosObj('/link-categories');
-    if (res.status === 200) {
-      setCategories(res.data);
-    } else {
-      setCategories([]);
-    }
-  }
-
-  useEffect(() => {
-    getCategories();
-  }, []);
-
-  return { categories, getCategories };
+  return result;
 }
 
 export default useLinkCategories;

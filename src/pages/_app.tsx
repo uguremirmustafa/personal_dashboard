@@ -8,6 +8,9 @@ import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
 import { IconContext } from 'react-icons';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -27,16 +30,18 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const guestGuard = Component.guestGuard ?? false;
 
   return (
-    <AuthProvider>
-      <ModalWrapper>
-        <RightClickContext>
-          <IconContext.Provider value={{ className: 'icon' }}>
-            <Guards authGuard={authGuard} guestGuard={guestGuard}>
-              {getLayout(<Component {...pageProps} />)}
-            </Guards>
-          </IconContext.Provider>
-        </RightClickContext>
-      </ModalWrapper>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <ModalWrapper>
+          <RightClickContext>
+            <IconContext.Provider value={{ className: 'icon' }}>
+              <Guards authGuard={authGuard} guestGuard={guestGuard}>
+                {getLayout(<Component {...pageProps} />)}
+              </Guards>
+            </IconContext.Provider>
+          </RightClickContext>
+        </ModalWrapper>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }

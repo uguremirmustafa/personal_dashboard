@@ -17,6 +17,9 @@
   .active {
     @apply bg-primary hover:bg-primary-focus;
   }
+  .skeleton {
+    @apply bg-neutral-700 w-full rounded-md animate-pulse;
+  }
 }
 
 .icon > path,

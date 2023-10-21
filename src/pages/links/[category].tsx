@@ -1,29 +1,38 @@
 import LinkForm from '@/components/forms/LinkForm';
-import LinkCategories from '@/components/layout/LinkCategories';
 import LinksLayout from '@/components/layout/LinksLayout';
 import MainLayout from '@/components/layout/MainLayout';
 import LinkCard from '@/components/link-card/LinkCard';
 import ConfirmationModal from '@/components/modal/modal-contents/ConfirmationModal';
 import { useModal } from '@/context/ModalContext';
 import { useRightClick } from '@/context/RightClickContext';
-import useLinkCategories from '@/hooks/useLinkCategories';
 import useLinks from '@/hooks/useLinks';
 import axiosObj from '@/utils/api/axios';
-import { LinkItemWithCategoryIdList, LinkItemWithId } from '@/utils/schema-types';
+import getNumbers from '@/utils/helpers/number-array';
+import { CategoryWithId, LinkItemWithCategoryIdList, LinkItemWithId } from '@/utils/schema-types';
+import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { GrEdit } from 'react-icons/gr';
 import { HiOutlineTrash } from 'react-icons/hi2';
+import { useQueryClient } from 'react-query';
 
 function Page(): JSX.Element {
-  const { links, getData } = useLinks();
-  const { getCategories, categories } = useLinkCategories();
+  const { data: links, refetch: getLinks, error: linksError } = useLinks();
+  const queryClient = useQueryClient();
   const { setModal, closeModal } = useModal();
+  const router = useRouter();
+  const _categoryId = router.query?.category ?? '0';
+  const categoryId = Number(_categoryId);
+
+  const linkCategories = queryClient.getQueryData<CategoryWithId[]>('link_categories');
+
+  const category = linkCategories?.find((x) => x.id === categoryId);
+  const linkCountUnderCategory = category?._count.links ?? 5;
 
   function onSuccess() {
     closeModal();
-    getData();
-    getCategories();
+    getLinks();
+    queryClient.fetchQuery('link_categories');
   }
 
   function openLinkForm(item: LinkItemWithCategoryIdList, id?: LinkItemWithId['id']) {
@@ -92,29 +101,39 @@ function Page(): JSX.Element {
   }
 
   return (
-    <div className="grid grid-cols-12 gap-4">
-      <LinkCategories categories={categories} />
-      <div className="col-span-10">
-        <div className="flex items-end  gap-4 mb-3">
-          <h2 className="text-2xl font-bold">Links</h2>
-          <div className="tooltip" data-tip="New Link">
-            <button
-              className="btn btn-sm btn-circle btn-primary no-animation shadow-lg"
-              onClick={() => openLinkForm(initialValues)}
-            >
-              <FaPlus />
-            </button>
-          </div>
+    <div>
+      <div className="flex items-end  gap-4 mb-3">
+        <h2 className="text-2xl font-bold">Links</h2>
+        <div className="tooltip" data-tip="New Link">
+          <button
+            className="btn btn-sm btn-circle btn-primary no-animation shadow-lg"
+            onClick={() => openLinkForm(initialValues)}
+          >
+            <FaPlus />
+          </button>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
-          {links.map((link) => {
-            return <LinkCard key={link.path} item={link} handleRightClick={handleRightClick} />;
-          })}
-        </div>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+        {links
+          ? links.map((link) => {
+              return <LinkCard key={link.path} item={link} handleRightClick={handleRightClick} />;
+            })
+          : getNumbers(linkCountUnderCategory).map((x) => (
+              <span key={x} className="skeleton h-20" />
+            ))}
+        {linksError ? <span>Something went wrong</span> : null}
       </div>
     </div>
   );
 }
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <MainLayout>
+      <LinksLayout>{page}</LinksLayout>
+    </MainLayout>
+  );
+};
 
 export default Page;
 

@@ -1,5 +1,6 @@
 import Form from '@/components/atoms/Form';
 import Input from '@/components/atoms/Input';
+import LoadingButton from '@/components/atoms/LoadingButton';
 import SaveButton from '@/components/atoms/SaveButton';
 import AuthLayout from '@/components/layout/AuthLayout';
 import { useAuth } from '@/context/AuthContext';
@@ -46,9 +47,9 @@ function Page(): JSX.Element {
             <Input {...field} label="Password" type="password" error={errors?.email} />
           )}
         />
-        <SaveButton className="mt-4" loading={false} disabled={!isValid}>
+        <LoadingButton className="mt-4" loading={false} disabled={!isValid}>
           Login
-        </SaveButton>
+        </LoadingButton>
       </Form>
     </div>
   );

@@ -1,30 +1,24 @@
-import { LinkCategory } from '@/types';
 import axiosObj from '@/utils/api/axios';
-import { LinkItem, LinkItemWithCategoryIdList } from '@/utils/schema-types';
+import sleep from '@/utils/helpers/sleep';
+import { LinkItemWithCategoryIdList } from '@/utils/schema-types';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+
+async function getLinksUnderCategory(categoryId: number) {
+  const res = await axiosObj<LinkItemWithCategoryIdList[]>(`/link/${categoryId}`);
+  await sleep(500);
+  return res.data;
+}
 
 function useLinks() {
-  const [links, setLinks] = useState<LinkItemWithCategoryIdList[]>([]);
   const router = useRouter();
-  const categoryId = router.query['category'];
-  async function getData() {
-    const res = await axiosObj(`/link/${categoryId}`);
-    if (res.status === 200) {
-      setLinks(res.data);
-    } else {
-      setLinks([]);
-    }
-  }
 
-  useEffect(() => {
-    if (categoryId) {
-      getData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId]);
+  const categoryId = router.query.category;
 
-  return { links, getData };
+  // Queries
+  const result = useQuery(['todos', categoryId], () => getLinksUnderCategory(Number(categoryId)));
+
+  return result;
 }
 
 export default useLinks;
