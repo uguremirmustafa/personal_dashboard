@@ -20,7 +20,7 @@ interface IProps {
 
 function LinkForm(props: IProps) {
   const { onSuccess, initialValues, id } = props;
-  const { categories } = useLinkCategories();
+  const { data: categories } = useLinkCategories();
   const {
     control,
     handleSubmit,
@@ -50,7 +50,7 @@ function LinkForm(props: IProps) {
     }
     setLoading(false);
   }
-  const options = categories.map((x) => ({ value: x.id, label: x.name }));
+  const options = categories?.map((x) => ({ value: x.id, label: x.name }));
 
   return (
     <Form onSubmit={handleSubmit(saveLink)} autoComplete="off">

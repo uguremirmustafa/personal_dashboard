@@ -25,11 +25,18 @@ export const User = Credentials.merge(
 );
 
 export const UserWithId = User.merge(ID);
+
 export const Category = z.object({
   name: z.string(),
+});
+
+export const CategoryLinkCount = z.object({
   _count: z.object({ links: z.number() }),
 });
+
+export const CategoryWithLinkCounts = Category.merge(CategoryLinkCount);
 export const CategoryWithId = Category.merge(ID);
+export const CategoryWithIdAndLinkCounts = Category.merge(ID).merge(CategoryLinkCount);
 
 export const Ingredient = z.object({
   name: z.string(),

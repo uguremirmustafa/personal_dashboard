@@ -8,7 +8,11 @@ import { useRightClick } from '@/context/RightClickContext';
 import useLinks from '@/hooks/useLinks';
 import axiosObj from '@/utils/api/axios';
 import getNumbers from '@/utils/helpers/number-array';
-import { CategoryWithId, LinkItemWithCategoryIdList, LinkItemWithId } from '@/utils/schema-types';
+import {
+  CategoryWithIdAndLinkCounts,
+  LinkItemWithCategoryIdList,
+  LinkItemWithId,
+} from '@/utils/schema-types';
 import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
 import { FaPlus } from 'react-icons/fa';
@@ -24,7 +28,7 @@ function Page(): JSX.Element {
   const _categoryId = router.query?.category ?? '0';
   const categoryId = Number(_categoryId);
 
-  const linkCategories = queryClient.getQueryData<CategoryWithId[]>('link_categories');
+  const linkCategories = queryClient.getQueryData<CategoryWithIdAndLinkCounts[]>('link_categories');
 
   const category = linkCategories?.find((x) => x.id === categoryId);
   const linkCountUnderCategory = category?._count.links ?? 5;
@@ -69,7 +73,16 @@ function Page(): JSX.Element {
     });
   }
 
-  const { setCtxMenu } = useRightClick();
+  const { setCtxMenu, close } = useRightClick();
+
+  function onEditClick(node: LinkItemWithCategoryIdList) {
+    close();
+    openLinkForm(node, node.id);
+  }
+  function onDeleteClick(node: LinkItemWithCategoryIdList) {
+    close();
+    openDeleteConfirm(node, node.id);
+  }
 
   function handleRightClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     return (node: LinkItemWithCategoryIdList) => {
@@ -83,13 +96,13 @@ function Page(): JSX.Element {
         children: (
           <>
             <li>
-              <a onClick={() => openLinkForm(node, node.id)}>
+              <a onClick={() => onEditClick(node)}>
                 <GrEdit />
                 Edit
               </a>
             </li>
             <li>
-              <a onClick={() => openDeleteConfirm(node, node.id)}>
+              <a onClick={() => onDeleteClick(node)}>
                 <HiOutlineTrash />
                 Delete
               </a>

@@ -1,6 +1,4 @@
 import { LinkItemWithCategoryIdList } from '@/utils/schema-types';
-import Image from 'next/image';
-import { GrEdit, GrTrash } from 'react-icons/gr';
 
 interface IProps {
   item: LinkItemWithCategoryIdList;
