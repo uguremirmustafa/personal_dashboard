@@ -60,7 +60,7 @@ function LinkCategories() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-base-200 to-base-100 rounded-box shadow-md h-[calc(100vh-120px)]">
+    <div className="bg-gradient-to-b from-base-200 to-base-100 rounded-box shadow-md">
       <div className="px-2 pt-2">
         {formActive ? (
           <Form onSubmit={handleSubmit(saveLinkCategory)} autoComplete="off">
@@ -141,7 +141,7 @@ function LinkCategories() {
           </div>
         )}
       </div>
-      <nav>
+      <nav className="md:h-[calc(100vh-120px)]">
         <ul className="flex flex-col gap-2 menu">
           {categories
             ? categories.map((cat) => {

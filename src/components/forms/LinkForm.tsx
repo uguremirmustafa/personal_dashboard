@@ -55,35 +55,16 @@ function LinkForm(props: IProps) {
   return (
     <Form onSubmit={handleSubmit(saveLink)} autoComplete="off">
       <Controller
-        control={control}
-        name="icon"
-        render={({ field, fieldState: { error } }) => (
-          <div className="flex gap-2">
-            <ImageUploader
-              {...field}
-              // value={field.value ?? ''}
-              label="Image Upload"
-              imageClass="h-auto md:h-[200px] !object-contain"
-              imageUrl={watch('icon')}
-              setImageUrl={(url: string) => setValue('icon', url)}
-            />
-            <div className="divider divider-horizontal pt-8"></div>
-            <Input
-              {...field}
-              label="Image Url"
-              type="url"
-              error={error}
-              placeholder="Paste image url here..."
-            />
-          </div>
-        )}
-      />
-      <p className="text-xs text-neutral-400">You can upload an icon or just paste the url.</p>
-      <Controller
         name="name"
         control={control}
         render={({ field, fieldState: { error } }) => (
-          <Input {...field} label="Name" error={error} placeholder="that cool website..." />
+          <Input
+            {...field}
+            label="Name"
+            error={error}
+            placeholder="that cool website..."
+            autoFocus
+          />
         )}
       />
       <Controller
@@ -113,6 +94,33 @@ function LinkForm(props: IProps) {
           />
         )}
       />
+      <Controller
+        control={control}
+        name="icon"
+        render={({ field, fieldState: { error } }) => (
+          <div className="flex flex-col md:flex-row md:gap-2">
+            <ImageUploader
+              {...field}
+              // value={field.value ?? ''}
+              label="Image Upload"
+              imageClass="h-auto md:h-[200px] !object-contain"
+              imageUrl={watch('icon')}
+              setImageUrl={(url: string) => setValue('icon', url)}
+            />
+            <div className="divider md:divider-horizontal pt-8">
+              <span>OR</span>
+            </div>
+            <Input
+              {...field}
+              label="Image Url"
+              type="url"
+              error={error}
+              placeholder="Paste image url here..."
+            />
+          </div>
+        )}
+      />
+      <p className="text-xs text-neutral-400">You can upload an icon or just paste the url.</p>
       <SaveButton loading={loading} disabled={!isValid} />
     </Form>
   );

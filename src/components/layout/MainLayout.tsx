@@ -10,12 +10,12 @@ interface IProps {
 function MainLayout(props: IProps): JSX.Element {
   const { children } = props;
   return (
-    <div className="min-h-screen bg-gradient-to-br from-base-100 to-base-200">
+    <div>
       <Navbar />
       <div className="divider h-[1px] shadow-none"></div>
       <Modal />
       <ContextMenu />
-      <div className="m-4 mt-0">{children}</div>
+      <div className="p-4 pt-0">{children}</div>
     </div>
   );
 }

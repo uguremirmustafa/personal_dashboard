@@ -14,7 +14,7 @@ const Input = forwardRef<HTMLInputElement, IProps>((props, ref) => {
   return (
     <FormControl className={className}>
       {label ? (
-        <label htmlFor={name} className="label">
+        <label htmlFor={`${name}_${label}`} className="label">
           <span className="label-text">{label}</span>
         </label>
       ) : null}
@@ -32,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, IProps>((props, ref) => {
         type={type}
         value={value}
         ref={ref}
-        id={name}
+        id={`${name}_${label}`}
         className="input input-bordered input-primary border w-full"
       />
       {error ? <span className="mt-2 text-xs text-error">{error.message}</span> : ''}

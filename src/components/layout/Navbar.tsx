@@ -21,7 +21,7 @@ function Navbar(): JSX.Element {
           );
         })}
       </ul>
-      <div className="bg-base-200 rounded-box shadow h-14 flex items-center justify-between px-4 py-3 w-full max-w-[300px] md:max-w-lg xl:max-w-xl">
+      <div className="bg-base-200 rounded-box shadow h-14 hidden md:flex items-center justify-between px-4 py-3 w-full max-w-[300px] md:max-w-lg xl:max-w-xl">
         <h1 className="text-lg font-bold flex items-center gap-2">
           <MdOutlineSpaceDashboard /> my dashboard
         </h1>
@@ -37,7 +37,7 @@ function Navbar(): JSX.Element {
         </div>
       </div>
       <ul className="flex items-center gap-3 bg-base-200 rounded-box shadow h-14 px-4 py-3">
-        <li>{auth.user?.email}</li>
+        <li className="hidden md:inline-block">{auth.user?.email}</li>
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="cursor-pointer avatar placeholder">
             <div className="bg-base-100 text-primary-content rounded-xl w-8">

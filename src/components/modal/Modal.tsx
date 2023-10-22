@@ -1,8 +1,12 @@
+'use client';
 import { useModal } from '@/context/ModalContext';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { FaTimes } from 'react-icons/fa';
 
 function Modal() {
   const { modal, closeModal } = useModal();
+
+  useHotkeys('escape', () => closeModal());
 
   if (!modal) {
     return null;
@@ -10,11 +14,17 @@ function Modal() {
   return (
     <dialog
       open={!!modal.id}
+      onKeyUp={(e) => {
+        if (e.key === 'Escape') {
+          closeModal();
+        }
+      }}
+      id={modal.id}
       className="modal overflow-hidden bg-neutral-900/40 items-start p-2 md:pt-10 md:px-10"
     >
       <div
         className={`modal-box shadow-lg p-0 w-full ${
-          modal?.size ? `max-w-[${modal.size}]` : 'max-w-xl'
+          modal.size ? `max-w-[${modal.size}]` : 'max-w-3xl'
         } `}
       >
         <form method="dialog">

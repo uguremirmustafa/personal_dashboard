@@ -19,6 +19,7 @@ import { FaPlus } from 'react-icons/fa';
 import { GrEdit } from 'react-icons/gr';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { useQueryClient } from 'react-query';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 function Page(): JSX.Element {
   const { data: links, refetch: getLinks, error: linksError } = useLinks();
@@ -113,16 +114,19 @@ function Page(): JSX.Element {
     };
   }
 
+  useHotkeys('ctrl+shift+k', () => openLinkForm(initialValues));
+
   return (
     <div>
-      <div className="flex items-end  gap-4 mb-3">
-        <h2 className="text-2xl font-bold">Links</h2>
+      <div className="flex items-center justify-between border-b border-b-base-200 pb-3 mb-3">
+        <h2 className="text-2xl font-bold">{category?.name}</h2>
         <div className="tooltip" data-tip="New Link">
           <button
-            className="btn btn-sm btn-circle btn-primary no-animation shadow-lg"
+            className="no-animation btn btn-ghost"
             onClick={() => openLinkForm(initialValues)}
           >
-            <FaPlus />
+            <kbd className="kbd">ctrl</kbd> + <kbd className="kbd">shift</kbd> +{' '}
+            <kbd className="kbd">k</kbd>
           </button>
         </div>
       </div>
