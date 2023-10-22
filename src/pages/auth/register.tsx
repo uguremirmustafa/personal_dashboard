@@ -23,19 +23,19 @@ function Page(): JSX.Element {
 
   const auth = useAuth();
 
-  function loginUser(data: User) {
-    auth.login(data, () =>
+  function registerUser(data: User) {
+    auth.register(data, () =>
       setError('email', {
         type: 'manual',
-        message: 'Email or Password is invalid',
+        message: 'Sth went wrong',
       })
     );
   }
 
   return (
     <div>
-      <h2 className="text-xl font-bold border-b border-b-base-300 pb-2">Login</h2>
-      <Form onSubmit={handleSubmit(loginUser)}>
+      <h2 className="text-xl font-bold border-b border-b-base-300 pb-2">Register</h2>
+      <Form onSubmit={handleSubmit(registerUser)}>
         <Controller
           name="email"
           control={control}
@@ -49,7 +49,7 @@ function Page(): JSX.Element {
           )}
         />
         <LoadingButton className="mt-4" loading={false} disabled={!isValid}>
-          Login
+          Register
         </LoadingButton>
       </Form>
     </div>

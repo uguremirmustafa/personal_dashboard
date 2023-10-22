@@ -36,8 +36,8 @@ function Page(): JSX.Element {
 
   function onSuccess() {
     closeModal();
-    getLinks();
     queryClient.fetchQuery('link_categories');
+    getLinks();
   }
 
   function openLinkForm(item: LinkItemWithCategoryIdList, id?: LinkItemWithId['id']) {
@@ -50,8 +50,8 @@ function Page(): JSX.Element {
 
   async function deleteLink(id: LinkItemWithId['id']) {
     try {
-      const res = await axiosObj.delete(`/link/${id}`);
-      if (res) {
+      const res = await axiosObj.delete<{ success: boolean }>(`/link/${id}`);
+      if (res.data.success) {
         onSuccess();
       } else {
         console.log('sth went wrong');
@@ -160,4 +160,5 @@ const initialValues: LinkItemWithCategoryIdList = {
   icon: '',
   categoryIds: [],
   id: 0,
+  isDeleted: false,
 };

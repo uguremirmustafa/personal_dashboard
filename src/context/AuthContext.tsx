@@ -13,6 +13,7 @@ const defaultProvider: AuthValuesType = {
   setLoading: () => Boolean,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
+  register: () => Promise.resolve(),
 };
 
 const AuthContext = createContext(defaultProvider);
@@ -100,6 +101,23 @@ const AuthProvider = ({ children }: Props) => {
     }
   };
 
+  const handleRegister = async (params: Credentials, errorCallback?: ErrCallbackType) => {
+    try {
+      const res = await axiosObj.post('/auth/register', params);
+      console.log(res);
+      if (res?.data) {
+        router.push('/auth/login');
+      } else {
+        if (errorCallback) errorCallback({ message: 'sth went wrong' });
+      }
+    } catch (error) {
+      if (errorCallback) {
+        errorCallback({ message: 'sth went wrong' });
+      }
+      clearUser();
+    }
+  };
+
   const handleLogout = () => {
     clearUser();
     router.push('/auth/login');
@@ -112,6 +130,7 @@ const AuthProvider = ({ children }: Props) => {
     setLoading,
     login: handleLogin,
     logout: handleLogout,
+    register: handleRegister,
   };
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;

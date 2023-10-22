@@ -16,7 +16,7 @@ function useLinks() {
   const categoryId = router.query.category;
 
   // Queries
-  const result = useQuery(['todos', categoryId], () => getLinksUnderCategory(Number(categoryId)));
+  const result = useQuery(['links', categoryId], () => getLinksUnderCategory(Number(categoryId)));
 
   return result;
 }

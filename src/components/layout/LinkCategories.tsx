@@ -1,7 +1,7 @@
 import ActiveLink from '../active-link/ActiveLink';
 import useLinkCategories from '@/hooks/useLinkCategories';
 import getNumbers from '@/utils/helpers/number-array';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaCheck, FaPlus, FaSearch, FaSpinner, FaTimes } from 'react-icons/fa';
 import { Controller, useForm } from 'react-hook-form';
 import { Category } from '@/utils/schema-types';
@@ -11,6 +11,7 @@ import Form from '../atoms/Form';
 import { useMutation } from 'react-query';
 import { saveCategory } from '@/utils/api/link-category.api';
 import { useRouter } from 'next/router';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 function LinkCategories() {
   const router = useRouter();
@@ -59,9 +60,25 @@ function LinkCategories() {
     saveCategoryMutate(data);
   }
 
+  function jumpToMostProbableItem() {
+    if (categories && categories.length > 0 && categories.length < 3) {
+      const mostProbableItem = categories[0];
+      router.push(`/links/${mostProbableItem.id}`);
+    }
+  }
+
+  useEffect(() => {
+    if (search.length >= 3) {
+      jumpToMostProbableItem();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+
+  useHotkeys('ctrl+/', () => searchRef.current?.focus());
+
   return (
     <div className="bg-gradient-to-b from-base-200 to-base-100 rounded-box shadow-md">
-      <div className="px-2 pt-2">
+      <div className="px-3 pt-3">
         {formActive ? (
           <Form onSubmit={handleSubmit(saveLinkCategory)} autoComplete="off">
             <Controller
@@ -109,26 +126,18 @@ function LinkCategories() {
             />
           </Form>
         ) : (
-          <div className="flex justify-between items-center">
-            <div className="join">
+          <div className="flex justify-between gap-8 items-center">
+            <div className="relative w-full">
               <input
-                className="input join-item"
+                className="input w-full"
                 placeholder="Search categories"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 ref={searchRef}
               />
-              <button
-                className="px-3 inline-block join-item bg-base-100"
-                onClick={() => {
-                  if (search) {
-                    setSearch('');
-                    searchRef.current?.focus();
-                  }
-                }}
-              >
-                {search ? <FaTimes /> : <FaSearch />}
-              </button>
+              <div className="hidden md:flex items-center gap-1 absolute right-2 top-2">
+                <kbd className="kbd">ctrl</kbd>+<kbd className="kbd">/</kbd>
+              </div>
             </div>
             <div className="tooltip" data-tip="New Category">
               <button
@@ -150,7 +159,7 @@ function LinkCategories() {
                   <li key={cat.id}>
                     <ActiveLink activeClassName="active" href={`/links/${cat.id}`}>
                       {cat.name}
-                      <span className="badge badge-primary">{count}</span>
+                      {count > 0 ? <span className="badge badge-primary">{count}</span> : null}
                     </ActiveLink>
                   </li>
                 );

@@ -20,10 +20,12 @@ import {
   LinkItem,
   LinkWithId,
   LinkItemWithCategoryIdList,
+  LinkItemWithCategoryNames,
   Credentials,
   Category,
   CategoryWithId,
   CategoryWithLinkCounts,
+  LinkImportList,
   CategoryWithIdAndLinkCounts,
 } from './schemas/schemas';
 
@@ -72,3 +74,5 @@ export type UnitWithId = z.infer<typeof UnitWithId>;
 export type LinkItem = z.infer<typeof LinkItem>;
 export type LinkItemWithId = z.infer<typeof LinkWithId>;
 export type LinkItemWithCategoryIdList = z.infer<typeof LinkItemWithCategoryIdList>;
+export type LinkItemWithCategoryNames = z.infer<typeof LinkItemWithCategoryNames>;
+export type LinkImportList = z.infer<typeof LinkImportList>;

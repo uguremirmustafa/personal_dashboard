@@ -18,6 +18,7 @@ export type AuthValuesType = {
   setLoading: (value: boolean) => void;
   setUser: (value: UserInfo | null) => void;
   login: (params: User, errorCallback?: ErrCallbackType) => void;
+  register: (params: User, errorCallback?: ErrCallbackType) => void;
 };
 
 export const MODAL_IDS = ['link_form'] as const;

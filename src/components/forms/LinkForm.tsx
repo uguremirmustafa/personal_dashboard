@@ -41,7 +41,6 @@ function LinkForm(props: IProps) {
         method: id ? 'PUT' : 'POST',
         data: body,
       });
-      console.log(res);
       if (onSuccess) {
         onSuccess();
       }

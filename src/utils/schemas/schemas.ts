@@ -49,6 +49,7 @@ export const LinkItem = z.object({
   name: z.string().min(3, 'Come on dude, at least 3 chars 😒'),
   path: z.string().url('I think this is not a proper URL 👨‍💻'),
   icon: z.string().default(''),
+  isDeleted: z.boolean().default(false),
 });
 
 const CategoryIdList = z.object({
@@ -62,6 +63,11 @@ const CategoryIdList = z.object({
     .min(1, 'I need at least one category dude!'),
 });
 export const LinkItemWithCategoryIdList = LinkItem.merge(CategoryIdList).merge(ID);
+
+export const LinkItemWithCategoryNames = LinkItem.merge(
+  z.object({ categories: z.array(z.string()) })
+);
+export const LinkImportList = z.object({ links: z.array(LinkItemWithCategoryNames) });
 
 export const IngredientWithId = Ingredient.merge(ID);
 export const LinkWithId = LinkItem.merge(ID);
