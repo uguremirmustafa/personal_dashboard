@@ -119,14 +119,17 @@ function Page(): JSX.Element {
   return (
     <div>
       <div className="flex items-center justify-between border-b border-b-base-200 pb-3 mb-3">
-        <h2 className="text-2xl font-bold">{category?.name}</h2>
+        <h2 className="text-lg md:text-xl lg:text-2xl font-bold">{category?.name}</h2>
         <div className="tooltip" data-tip="New Link">
           <button
-            className="no-animation btn btn-ghost"
+            className="no-animation btn btn-sm md:btn-md btn-primary md:btn-ghost"
             onClick={() => openLinkForm(initialValues)}
           >
-            <kbd className="kbd">ctrl</kbd> + <kbd className="kbd">shift</kbd> +{' '}
-            <kbd className="kbd">k</kbd>
+            <span className="hidden md:flex items-center gap-1">
+              <kbd className="kbd">ctrl</kbd> + <kbd className="kbd">shift</kbd> +{' '}
+              <kbd className="kbd">k</kbd>
+            </span>
+            <span className="md:hidden">new link</span>
           </button>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { User } from '@/utils/schema-types';
 import { User as UserSchema } from '@/utils/schemas/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { ReactElement } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -51,6 +52,12 @@ function Page(): JSX.Element {
         <LoadingButton className="mt-4" loading={false} disabled={!isValid}>
           Login
         </LoadingButton>
+        <div className="flex items-center justify-between">
+          <span>No account?</span>
+          <Link href="/auth/register" className="text-secondary">
+            Create account 👉
+          </Link>
+        </div>
       </Form>
     </div>
   );

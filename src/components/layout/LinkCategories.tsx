@@ -2,7 +2,7 @@ import ActiveLink from '../active-link/ActiveLink';
 import useLinkCategories from '@/hooks/useLinkCategories';
 import getNumbers from '@/utils/helpers/number-array';
 import { useEffect, useRef, useState } from 'react';
-import { FaCheck, FaPlus, FaSearch, FaSpinner, FaTimes } from 'react-icons/fa';
+import { FaCheck, FaPlus, FaSpinner, FaTimes } from 'react-icons/fa';
 import { Controller, useForm } from 'react-hook-form';
 import { Category } from '@/utils/schema-types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -90,7 +90,7 @@ function LinkCategories() {
                     <input
                       {...field}
                       placeholder="Category name"
-                      className="input input-bordered w-full join-item"
+                      className="input input-sm md:input-md input-bordered w-full join-item"
                       autoFocus
                     />
                     <button
@@ -99,7 +99,7 @@ function LinkCategories() {
                         setFormActive(false);
                         reset({ name: '' });
                       }}
-                      className="join-item btn btn-neutral"
+                      className="join-item btn btn-sm md:btn-md btn-neutral"
                       disabled={loadingForSave}
                     >
                       {loadingForSave ? (
@@ -110,7 +110,11 @@ function LinkCategories() {
                         <FaTimes />
                       )}
                     </button>
-                    <button disabled={!isValid} className="join-item btn btn-success" type="submit">
+                    <button
+                      disabled={!isValid}
+                      className="join-item btn btn-sm md:btn-md btn-success"
+                      type="submit"
+                    >
                       {loadingForSave ? (
                         <span className="animate-spin">
                           <FaSpinner />
@@ -126,22 +130,18 @@ function LinkCategories() {
             />
           </Form>
         ) : (
-          <div className="flex justify-between gap-8 items-center">
-            <div className="relative w-full">
-              <input
-                className="input w-full"
-                placeholder="Search categories"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                ref={searchRef}
-              />
-              <div className="hidden md:flex items-center gap-1 absolute right-2 top-2">
-                <kbd className="kbd">ctrl</kbd>+<kbd className="kbd">/</kbd>
-              </div>
-            </div>
+          <div className="relative w-full join">
+            <input
+              className="input input-sm md:input-md w-full join-item"
+              placeholder="Search categories (ctrl+/)"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              ref={searchRef}
+            />
+
             <div className="tooltip" data-tip="New Category">
               <button
-                className="btn btn-sm btn-circle btn-primary no-animation shadow-lg"
+                className="btn btn-sm md:btn-md join-item btn-primary no-animation"
                 onClick={() => openCategoryForm()}
               >
                 <FaPlus />
@@ -151,7 +151,7 @@ function LinkCategories() {
         )}
       </div>
       <nav className="md:h-[calc(100vh-120px)]">
-        <ul className="flex flex-col gap-2 menu">
+        <ul className="flex flex-row flex-nowrap overflow-x-auto md:flex-col gap-2 menu">
           {categories
             ? categories.map((cat) => {
                 const count = cat._count.links;
