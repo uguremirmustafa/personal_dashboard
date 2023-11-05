@@ -1,7 +1,12 @@
+import Calendar from '@/components/molecules/calendar/Calendar';
 import { NextPageWithLayout } from './_app';
 
 const Page: NextPageWithLayout = () => {
-  return <p>hello world</p>;
+  return (
+    <div>
+      <Calendar />
+    </div>
+  );
 };
 
 export default Page;

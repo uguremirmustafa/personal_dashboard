@@ -1,18 +1,26 @@
-import sleep from '../helpers/sleep';
-import { Category, CategoryId, CategoryWithId } from '../schema-types';
+import { CategoryWithId } from '../schema-types';
 import axiosObj from './axios';
 
 export async function getCategories() {
   const res = await axiosObj('/link-categories');
-  await sleep(500);
   return res.data;
 }
 
-export async function saveCategory(category: Category) {
-  const res = await axiosObj<CategoryWithId>('/link-categories', {
-    method: 'POST',
+export async function saveCategory(category: CategoryWithId) {
+  const endpoint = category.id > 0 ? `/link-categories/${category.id}` : '/link-categories';
+  const method = category.id > 0 ? 'PUT' : 'POST';
+  const res = await axiosObj<CategoryWithId>(endpoint, {
+    method,
     data: category,
   });
-  await sleep(500);
+  return res.data;
+}
+
+export async function deleteCategory(id: CategoryWithId['id']) {
+  const endpoint = `/link-categories/${id}`;
+  const method = 'DELETE';
+  const res = await axiosObj<number>(endpoint, {
+    method,
+  });
   return res.data;
 }

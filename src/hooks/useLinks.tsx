@@ -6,7 +6,6 @@ import { useQuery } from 'react-query';
 
 async function getLinksUnderCategory(categoryId: number) {
   const res = await axiosObj<LinkItemWithCategoryIdList[]>(`/link/${categoryId}`);
-  await sleep(500);
   return res.data;
 }
 

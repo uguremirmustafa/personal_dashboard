@@ -1,0 +1,18 @@
+:root {
+  --bc: #2f2f2f;
+}
+.calendar-wrapper .days-wrapper {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-top: 1px solid var(--bc);
+  border-left: 1px solid var(--bc);
+}
+.days-wrapper > div {
+  aspect-ratio: 1;
+  border-right: 1px solid var(--bc);
+  border-bottom: 1px solid var(--bc);
+  padding: 4px;
+}
+.day:hover {
+  background-color: red;
+}

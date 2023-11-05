@@ -4,6 +4,7 @@
 
 @layer base {
   * {
+    scrollbar-gutter: stable;
     @apply text-neutral-200;
   }
   body {
@@ -64,4 +65,15 @@
 }
 .rs__multi-value__label {
   @apply !text-primary-content;
+}
+::-webkit-scrollbar {
+  @apply bg-base-200 w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-base-300;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-base-100;
 }

@@ -4,6 +4,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import { ModalWrapper } from '@/context/ModalContext';
 import { RightClickContext } from '@/context/RightClickContext';
 import '@/styles/globals.css';
+import '@/styles/calendar.css';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
